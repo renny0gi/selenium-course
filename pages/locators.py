@@ -13,5 +13,15 @@ class ProductPageLocators:
     PRODUCT_NAME = (By.CSS_SELECTOR, '.product_main h1')
     PRODUCT_PRICE = (By.CSS_SELECTOR, '.product_main .price_color')
     PRODUCT_DESCR = (By.CSS_SELECTOR, '#product_description + p')
-    MSG_ADD_PRODUCT_NAME = (By.CSS_SELECTOR, '#messages .alert:first-child strong')
-    MSG_ADD_BASKET_SUM = (By.CSS_SELECTOR, '#messages .alert:last-child strong')
+    SUCCESS_MESSAGE_PRODUCT_NAME = (By.CSS_SELECTOR, '#messages .alert:first-child strong')
+    SUCCESS_MESSAGE_BASKET_SUM = (By.CSS_SELECTOR, '#messages .alert:last-child strong')
+    SUCCESS_MESSAGE = (By.CSS_SELECTOR, '#messages > div')
+
+class BasePageLocators:
+    LOGIN_LINK = (By.CSS_SELECTOR, "#login_link")
+    LOGIN_LINK_INVALID = (By.CSS_SELECTOR, "#login_link_inc")
+    BASKET_LINK = (By.CSS_SELECTOR, '.basket-mini .btn-group > a.btn')
+
+class BasketPageLocators:
+    TEXT_EMPTY_BASKET = (By.CSS_SELECTOR, '.content #content_inner > p')
+    BASKET_ITEMS = (By.CSS_SELECTOR, '.content #content_inner .basket-items')

@@ -33,12 +33,19 @@ class ProductPage(BasePage):
             f'Product description is not presented on {self.__class__.__name__}'
     
     def check_add_msg_with_product_name(self, product_name):
-        msg_prod_name = self.browser.find_element(*ProductPageLocators.MSG_ADD_PRODUCT_NAME).text
+        msg_prod_name = self.browser.find_element(*ProductPageLocators.SUCCESS_MESSAGE_PRODUCT_NAME).text
         assert product_name == msg_prod_name, \
             f'Added product "{product_name}" doesn\'t match choosen product "{msg_prod_name}"'
 
     def check_add_msg_with_basket_sum(self, basket_sum):
-        msg_basket_sum = self.browser.find_element(*ProductPageLocators.MSG_ADD_BASKET_SUM).text
+        msg_basket_sum = self.browser.find_element(*ProductPageLocators.SUCCESS_MESSAGE_BASKET_SUM).text
         assert basket_sum == msg_basket_sum, \
             f'Basket total\'s expected to be: {basket_sum}, but we got: {msg_prod_name}'
         
+    def should_not_be_success_message(self):
+        assert self.is_not_element_present(*ProductPageLocators.SUCCESS_MESSAGE), \
+        "Success message is presented, but should not be"
+
+    def should_disappear_success_message(self):
+        assert self.is_disappeared(*ProductPageLocators.SUCCESS_MESSAGE), \
+        "Success message is presented, but should disappear"
