@@ -19,6 +19,7 @@ def test_guest_can_see_product_info(browser):
     product_page.should_be_product_description
 
 @pytest.mark.parametrize('url_product_promo', list_of_urls)
+@pytest.mark.need_review
 def test_guest_can_add_product_to_basket(browser, url_product_promo):
     product_page = ProductPage(browser, url_product_promo).open()
 
@@ -59,7 +60,7 @@ def test_guest_should_see_login_link_on_product_page(browser):
     page.open()
     page.should_be_login_link()
 
-
+@pytest.mark.need_review
 def test_guest_can_go_to_login_page_from_product_page(browser):
     link = "http://selenium1py.pythonanywhere.com/catalogue/the-city-and-the-stars_95/"
     page = ProductPage(browser, link).open()
@@ -68,6 +69,7 @@ def test_guest_can_go_to_login_page_from_product_page(browser):
     login_page.should_be_login_page()
 
 @pytest.mark.check_basket
+@pytest.mark.need_review
 def test_guest_cant_see_product_in_basket_opened_from_product_page(browser):
     link = "http://selenium1py.pythonanywhere.com/catalogue/the-city-and-the-stars_95/"
     page = ProductPage(browser, link).open()
@@ -77,3 +79,35 @@ def test_guest_cant_see_product_in_basket_opened_from_product_page(browser):
     basket_empty = 'Your basket is empty. Continue shopping'
     basket_page.should_see_text_empty_basket()
     basket_page.check_text_empty_basket(basket_empty)
+
+class TestUserAddToBasketFromProductPage:
+
+    url = list_of_urls[0]
+
+    @pytest.fixture(autouse=True)
+    def setup(self, browser):
+        login_link = 'http://selenium1py.pythonanywhere.com/accounts/login/'
+        login_page = LoginPage(browser, login_link).open()
+        login_page.register_new_user(self._generate_email(), 'testpass123')
+        login_page.should_be_authorized_user()
+
+    def _generate_email(self):
+        return str(time.time()) + "@fakemail.org"
+    
+    @pytest.mark.negative_tests
+    def test_guest_cant_see_success_message(self, browser):
+        product_page = ProductPage(browser, self.url).open()
+        product_page.should_not_be_success_message()
+
+    @pytest.mark.need_review
+    def test_user_can_add_product_to_basket(self, browser):
+        product_page = ProductPage(browser, self.url).open()
+
+        name = product_page.get_product_name()
+        price = product_page.get_product_price()
+        product_page.should_be_button_add_to_basket()
+        product_page = product_page.add_to_basket()
+        
+        product_page.solve_quiz_and_get_code()
+        product_page.check_add_msg_with_product_name(name)
+        product_page.check_add_msg_with_basket_sum(price)
