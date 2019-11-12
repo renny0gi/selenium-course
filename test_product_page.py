@@ -24,9 +24,9 @@ def test_guest_can_add_product_to_basket(browser, url_product_promo):
     product_page = ProductPage(browser, url_product_promo).open()
 
     name = product_page.get_product_name()
-    print(f'{name=}')
+    # print(f'{name=}')
     price = product_page.get_product_price()
-    print(f'{price=}')
+    # print(f'{price=}')
     product_page.should_be_button_add_to_basket()
     product_page = product_page.add_to_basket()
     
